@@ -1,4 +1,5 @@
 #!/usr/bin/env python2.7
+#	Install tweepy before running https://github.com/tweepy/tweepy
 import tweepy
 import urllib2
 import xml.etree.cElementTree as et
