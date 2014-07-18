@@ -20,7 +20,7 @@ fileHandle.close()
 
 day2Base64 = xmlTree.find('day2image')
 fileHandle = open("day2image.png", "wb")
-fileHandle.write(day1Base64.text.decode('base64'))
+fileHandle.write(day2Base64.text.decode('base64'))
 fileHandle.close()
 
 day3Base64 = xmlTree.find('day3image')
