@@ -1,36 +1,24 @@
 #!/usr/bin/env python2.7
 import tweepy
-import urllib2
-import xml.etree.cElementTree as et
-import time
-import datetime
 import os
+import requests
+from PIL import Image
+from io import open as iopen
 
-#       Let's get the data
-#xmlData = urllib2.urlopen('http://flooddata.alphagov.co.uk/3df.xml').read()
+# Get the data from the Met Office
+data = requests.get("https://api.ffc-environment-agency.fgs.metoffice.gov.uk/api/public/statements").json()
 
-#       Parse the XML
-#xmlTree = et.fromstring(xmlData)
+# Last element is most recent. Get forecast
+forecast_text = data["statements"][-1]["public_forecast"]["english_forecast"]
 
-#       Get images and write them to disk
-#day1Base64 = xmlTree.find('day1image')
+# Get Image
+forecast_image_url = data["statements"][-1]["png_thumbnails_with_days_url"]
 
-img = urllib2.urlopen("http://apps.environment-agency.gov.uk/flood/3days/Controls/FloodForecast/ImageHandler.ashx?ImageId=1")
-fileHandle = open("day1image.png", "wb")
-fileHandle.write(img.read())
-fileHandle.close()
-
-#day2Base64 = xmlTree.find('day2image')
-img = urllib2.urlopen("http://apps.environment-agency.gov.uk/flood/3days/Controls/FloodForecast/ImageHandler.ashx?ImageId=2")
-fileHandle = open("day2image.png", "wb")
-fileHandle.write(img.read())
-fileHandle.close()
-
-#day3Base64 = xmlTree.find('day3image')
-img = urllib2.urlopen("http://apps.environment-agency.gov.uk/flood/3days/Controls/FloodForecast/ImageHandler.ashx?ImageId=3")
-fileHandle = open("day3image.png", "wb")
-fileHandle.write(img.read())
-fileHandle.close()
+# Save Image
+photo_path = 'forecast_image.png'
+image = requests.get(forecast_image_url)
+with iopen(photo_path, 'wb') as file:
+   file.write(image.content)
 
 # Consumer keys and access tokens, used for OAuth
 consumer_key        = ''
@@ -45,27 +33,13 @@ auth.set_access_token(access_token, access_token_secret)
 # Creation of the actual interface, using authentication
 api = tweepy.API(auth)
 
-#       Get the day names of today, tomorrow, and the day after
-day = (24*60)*60
-today    = datetime.datetime.fromtimestamp(time.time())
-tomorrow = datetime.datetime.fromtimestamp(time.time() + day)
-third    = datetime.datetime.fromtimestamp(time.time() + day + day)
-
-#       Set the information URL
-info = 'http://apps.environment-agency.gov.uk/flood/3days/125305.aspx'
+# Set the information URL
+info_url = 'https://flood-warning-information.service.gov.uk/'
 
 # Send the tweet with photo
-photo_path = 'day1image.png'
-status = 'The flood forecast for ' + today.strftime('%A')    + ' is...' + info
+photo_path = 'forecast_image.png'
+status = forecast_text + "\n"  + info_url
 api.update_with_media(photo_path, status=status)
-os.remove(photo_path)
 
-photo_path = 'day2image.png'
-status = 'The flood forecast for ' + tomorrow.strftime('%A') + ' is...' + info
-api.update_with_media(photo_path, status=status)
-os.remove(photo_path)
-
-photo_path = 'day3image.png'
-status = 'The flood forecast for ' + third.strftime('%A')    + ' is... ' + info
-api.update_with_media(photo_path, status=status)
+# Delete the photo
 os.remove(photo_path)
