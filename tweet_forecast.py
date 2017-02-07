@@ -34,7 +34,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Set the information URL
-info_url = 'https://flood-warning-information.service.gov.uk/'
+info_url = 'https://flood-warning-information.service.gov.uk/5-day-flood-risk'
 
 # Send the tweet with photo
 photo_path = 'forecast_image.png'
