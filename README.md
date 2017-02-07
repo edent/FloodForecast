@@ -1,11 +1,18 @@
-3dayflood
-=========
+# Flood Forecast to Twitter
 
-A BlueLightCamp Hack for #ukBLC14
+A BlueLightCamp Hack for [#ukBLC14](https://twitter.com/hashtag/ukblc14?src=hash)
 
-Ingests the 3 Day Flood Forecast from http://flooddata.alphagov.co.uk/
+This tweets the England and Wales flood forecast at https://twitter.com/floodforecast
 
-Tweets the images to https://twitter.com/3dayflood
+Uses data from https://api.foursources.metoffice.gov.uk/docs/flood-guidance-statement-api-public
+
+## Requirements
+
+* [Tweepy](https://github.com/tweepy/tweepy)
+* [Requests](http://docs.python-requests.org/en/master/)
+
+
+## Prizes
 
 Winner! Best in show :-)
 
@@ -15,4 +22,6 @@ https://twitter.com/edent/status/465512958391758849
 
 https://twitter.com/dataenvagency/status/465503979406131200
 
-You will need to install tweepy for this to work - https://github.com/tweepy/tweepy
+## Blog
+
+Read all about it https://shkspr.mobi/blog/2014/05/putting-uk-flooding-alerts-onto-twitter-ukblc14/
