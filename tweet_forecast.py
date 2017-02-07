@@ -19,6 +19,13 @@ photo_path = 'forecast_image.png'
 image = requests.get(forecast_image_url)
 with iopen(photo_path, 'wb') as file:
    file.write(image.content)
+   
+# Replace alpha with white
+png = Image.open(photo_path)
+png.load() # required for png.split()
+background = Image.new("RGB", png.size, (255, 255, 255))
+background.paste(png, mask=png.split()[3]) # 3 is the alpha channel
+background.save(photo_path, 'PNG')
 
 # Consumer keys and access tokens, used for OAuth
 consumer_key        = ''
