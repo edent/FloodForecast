@@ -1,4 +1,6 @@
 #!/usr/bin/env python2.7
+# -*- coding: UTF-8 -*-
+
 import tweepy
 import os
 import requests
@@ -45,7 +47,7 @@ info_url = 'https://flood-warning-information.service.gov.uk/5-day-flood-risk'
 
 # Send the tweet with photo
 photo_path = 'forecast_image.png'
-status = forecast_text + "\n"  + info_url
+status = forecast_text[:114] + u"…\n"  + info_url
 api.update_with_media(photo_path, status=status)
 
 # Delete the photo
